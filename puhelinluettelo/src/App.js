@@ -48,9 +48,7 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person.id !== id));
         })
- 
     }
- 
   }
  
   const getId = () => {
@@ -65,17 +63,30 @@ const App = () => {
       
     }
    
-
-
   const addPerson = (event) => {
     event.preventDefault()
     
     if (checkName) {
-      window.alert(`${newName} is already added to phonebook`);
-      setNewNumber('')
-      setNewName('')
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+      const personObject = {
+        name: newName,
+        number: newNumber
+      }
+      const id = checkId(newName)
+
+      personService
+        .update(id,personObject)
+        .then(response => {
+          console.log(response)
+          console.log(newNumber)
+          console.log(id)
+          setPersons(persons.map(person => person.id !== id ? person : response))
+          setNewNumber('')
+          setNewName('')
+        })
+      }
     }
-    
+  
     else {
       const personObject = {
         name: newName,
@@ -94,8 +105,18 @@ const App = () => {
     }
   }
 
-
   const checkName = persons.some(persons => persons.name.toLowerCase() === newName.toLowerCase())
+
+  const checkId = (name) => {
+    console.log(name)
+    for (let index = 0; index < persons.length; index++) {
+      if (name.toLowerCase() === persons[index].name.toLowerCase()) {
+        console.log(persons[index].id)
+        return persons[index].id
+      }
+  }
+
+}
 
   const personsToShow = showAll
   ? persons
