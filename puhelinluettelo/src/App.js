@@ -38,6 +38,35 @@ const App = () => {
     setSearch(event.target.value)
   }
 
+  const handleDelete = (id, name) => {
+    console.log(id)
+    console.log(name)
+    const accepted = window.confirm(`Delete ${name}?`)
+    if (accepted) {
+      personService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id));
+        })
+ 
+    }
+ 
+  }
+ 
+  const getId = () => {
+    let suurin = 0
+    for (let index = 0; index < persons.length; index++) {
+      if (persons[index].id > suurin) {
+        suurin = persons[index].id
+      }
+        
+      }
+      return(suurin +1)
+      
+    }
+   
+
+
   const addPerson = (event) => {
     event.preventDefault()
     
@@ -51,7 +80,7 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
-        id: persons.length +1,
+        id: getId(),
       }
       
       personService
@@ -88,7 +117,7 @@ const App = () => {
         
       <h2>Numbers</h2>
       <div>
-          <ul>{personsToShow.map((person,i) => <Person key={i} person={person} />)}</ul>
+          <ul>{personsToShow.map((person,i) => <Person key={i} person={person} handleDelete={handleDelete} />)}</ul>
         </div>
     </div>
   )
