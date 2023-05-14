@@ -4,6 +4,7 @@ import Person from './components/Person'
 import Form from './components/Form'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber ] =useState('')
   const [showAll, setShowAll] = useState(false)
   const [search, setSearch] =useState('')
+  const [notification, setNotification] =useState('')
 
   useEffect(() => {
     personService
@@ -46,7 +48,11 @@ const App = () => {
       personService
         .remove(id)
         .then(() => {
+          setNotification(`deleted ${name}`)
           setPersons(persons.filter(person => person.id !== id));
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         })
     }
   }
@@ -56,11 +62,9 @@ const App = () => {
     for (let index = 0; index < persons.length; index++) {
       if (persons[index].id > suurin) {
         suurin = persons[index].id
+      }  
       }
-        
-      }
-      return(suurin +1)
-      
+      return(suurin +1) 
     }
    
   const addPerson = (event) => {
@@ -77,10 +81,14 @@ const App = () => {
       personService
         .update(id,personObject)
         .then(response => {
+          setNotification(`Number changed for ${newName}`)
           console.log(response)
           console.log(newNumber)
           console.log(id)
           setPersons(persons.map(person => person.id !== id ? person : response))
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
           setNewNumber('')
           setNewName('')
         })
@@ -97,10 +105,14 @@ const App = () => {
       personService
         .create(personObject)
         .then(response => {
+          setNotification(`Added ${newName}!`)
           console.log(newName)
           setPersons(persons.concat(personObject))
           setNewNumber('')
           setNewName('')
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         })
     }
   }
@@ -126,6 +138,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification notification={notification} />
       <Filter search={search} handleSearch={handleSearch}/>
       <h2>Add new</h2>
       <Form
