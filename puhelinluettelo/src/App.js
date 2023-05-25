@@ -14,6 +14,12 @@ const App = () => {
   const [showAll, setShowAll] = useState(false)
   const [search, setSearch] =useState('')
   const [notification, setNotification] =useState('')
+  const [notiType, setNotiType] =useState('')
+
+  const messageTypes = {
+    success: 'success',
+    error: 'error'
+  }
 
   useEffect(() => {
     personService
@@ -49,10 +55,20 @@ const App = () => {
         .remove(id)
         .then(() => {
           setNotification(`deleted ${name}`)
+          setNotiType(messageTypes.success)
           setPersons(persons.filter(person => person.id !== id));
           setTimeout(() => {
             setNotification(null)
+            setNotiType('')
           }, 5000)
+        })
+        .catch(error => {
+          setNotification(`Error: Couldn't delete ${name}`)
+          setNotiType(messageTypes.error)
+          setTimeout(() => {
+            setNotification('')
+            setNotiType('')
+          }, 8000);
         })
     }
   }
@@ -82,15 +98,25 @@ const App = () => {
         .update(id,personObject)
         .then(response => {
           setNotification(`Number changed for ${newName}`)
+          setNotiType(messageTypes.success)
           console.log(response)
           console.log(newNumber)
           console.log(id)
           setPersons(persons.map(person => person.id !== id ? person : response))
           setTimeout(() => {
             setNotification(null)
+            setNotiType('')
           }, 5000)
           setNewNumber('')
           setNewName('')
+        })
+        .catch(error => {
+          setNotification(`Error with contact ${newName}`)
+          setNotiType(messageTypes.error)
+          setTimeout(() => {
+            setNotification('')
+            setNotiType('')
+          }, 8000);
         })
       }
     }
@@ -106,13 +132,23 @@ const App = () => {
         .create(personObject)
         .then(response => {
           setNotification(`Added ${newName}!`)
+          setNotiType(messageTypes.success)
           console.log(newName)
           setPersons(persons.concat(personObject))
           setNewNumber('')
           setNewName('')
           setTimeout(() => {
             setNotification(null)
+            setNotiType('')
           }, 5000)
+        })
+        .catch(error => {
+          setNotification(`Error: Couldn't create ${newName}`)
+          setNotiType(messageTypes.error)
+          setTimeout(() => {
+            setNotification('')
+            setNotiType('')
+          }, 8000);
         })
     }
   }
@@ -138,7 +174,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification notification={notification} />
+      <Notification notification={notification} type={notiType} types={messageTypes} />
       <Filter search={search} handleSearch={handleSearch}/>
       <h2>Add new</h2>
       <Form

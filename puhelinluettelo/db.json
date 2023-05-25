@@ -1,34 +1,14 @@
 {
   "persons": [
     {
-      "name": "srpa",
-      "number": "321",
-      "id": 17
-    },
-    {
-      "name": "testi testinen",
-      "number": "321321",
-      "id": 18
-    },
-    {
-      "name": "testin testin testinen",
-      "number": "111",
-      "id": 19
-    },
-    {
-      "name": "Arto",
-      "number": "30303003",
-      "id": 21
-    },
-    {
-      "name": "Artsi",
-      "number": "3",
-      "id": 25
-    },
-    {
       "name": "Artsi Heltsi",
       "number": "321",
       "id": 26
+    },
+    {
+      "name": "seppo",
+      "number": "23",
+      "id": 27
     }
   ]
 }
