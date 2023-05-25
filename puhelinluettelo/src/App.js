@@ -63,7 +63,7 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          setNotification(`Error: Couldn't delete ${name}`)
+          setNotification(`Error: Couldn't delete ${name}. Please reload page.`)
           setNotiType(messageTypes.error)
           setTimeout(() => {
             setNotification('')
@@ -111,7 +111,7 @@ const App = () => {
           setNewName('')
         })
         .catch(error => {
-          setNotification(`Error with contact ${newName}`)
+          setNotification(`Error with contact ${newName}. Please reload page.`)
           setNotiType(messageTypes.error)
           setTimeout(() => {
             setNotification('')
@@ -143,7 +143,7 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          setNotification(`Error: Couldn't create ${newName}`)
+          setNotification(`Error: Couldn't create ${newName}. Please reload page.`)
           setNotiType(messageTypes.error)
           setTimeout(() => {
             setNotification('')
